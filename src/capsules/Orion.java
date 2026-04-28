@@ -1,3 +1,9 @@
+package capsules;
+
+import boosters.*;
+import launchers.*;
+import missions.*;
+
 public class Orion extends Capsule {
 
     public Orion() {

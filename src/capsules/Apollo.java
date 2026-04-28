@@ -1,3 +1,9 @@
+package capsules;
+
+import boosters.*;
+import launchers.*;
+import missions.*;
+
 public class Apollo extends Capsule {
 
     public Apollo() {

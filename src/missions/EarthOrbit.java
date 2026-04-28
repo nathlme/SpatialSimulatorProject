@@ -1,3 +1,10 @@
+package missions;
+
+import boosters.*;
+import capsules.*;
+import launchers.*;
+ 
+
 public class EarthOrbit extends Mission {
 
     public EarthOrbit() {

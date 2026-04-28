@@ -1,11 +1,18 @@
-public class Boosters {
-    
-    String name;
-    int    additionalBoost;
-    int    mass;
-    int    price;
+package boosters;
 
-    public Boosters(String name, int additionalBoost, int mass, int price) {
+import java.util.List;
+import capsules.*;
+import launchers.*;
+import missions.*;
+
+public class Booster {
+    
+    public String name;
+    public int    additionalBoost;
+    public int    mass;
+    public int    price;
+
+    public Booster(String name, int additionalBoost, int mass, int price) {
         this.name            = name;
         this.additionalBoost = additionalBoost;
         this.mass            = mass;

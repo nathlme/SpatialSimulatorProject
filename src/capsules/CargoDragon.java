@@ -1,3 +1,10 @@
+package capsules;
+
+import boosters.*;
+import launchers.*;
+import missions.*;
+
+
 public class CargoDragon extends Capsule {
 
     public CargoDragon() {

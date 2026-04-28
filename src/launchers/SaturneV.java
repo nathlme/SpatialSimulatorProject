@@ -1,6 +1,13 @@
-public class SaturneV extends Lauchers {
+package launchers;
+
+import boosters.*;
+import capsules.*;
+import missions.*;
+
+
+public class SaturneV extends Launcher {
 
     public SaturneV() {
-        super("Saturne V", true, 0, 2 700, 140, 1 500);
+        super("Saturne V", true, 0, 2700, 140, 1500);
     }
 }
