@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import boosters.*;
@@ -8,6 +9,7 @@ import missions.*;
 import rockets.*;
 import common.SpaceComponent;
 
+
 public class Simulator {
     List<Capsule>  listCapsules;
     List<Booster>  listBoosters;
@@ -15,9 +17,13 @@ public class Simulator {
     List<Launch>   listLaunch;
     List<Mission>  listMission;
 
-    private double money = 1000;
+    Capsule  currentCapsule;
+    List<Booster>  currentListBoosters;
+    Launcher currentLauncher;
 
-    private Scanner sc = new Scanner(System.in);
+    private double money = 100000;
+
+    private static Scanner sc = new Scanner(System.in);
 
     public Simulator(List<Capsule> listCapsules, List<Booster> listBoosters, List<Launcher> listLaunchers, List<Launch> listLaunch, List<Mission> listMission) {
         this.listCapsules  = listCapsules;
@@ -25,9 +31,23 @@ public class Simulator {
         this.listLaunchers = listLaunchers;
         this.listLaunch    = listLaunch;
         this.listMission   = listMission;
+
+        this.currentListBoosters = new ArrayList<>();
     }
 
 
+    public static void pause(){
+        System.out.print("\nAppuyez sur Entrée pour continuer...\n");
+        String action = sc.nextLine();
+    }
+
+    public static void clearConsole() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -48,7 +68,38 @@ public class Simulator {
         }
     }
 
+    public boolean canAddBooster(){
+        if (currentLauncher != null) {
+            if (currentListBoosters.size() < currentLauncher.getMaxBooster()) {
+                return true;
+            }else {
+                System.out.println("Vous ne pouvez plus ajouter de booster avec ce lanceur !");
+                pause();
+                return false;
+            }
+        }else{
+            System.out.println("\nVeuillez acheter un lanceur d'abord !");
+            pause();
+            return false;
+        }
+    }
 
+
+    public boolean assemble() {
+        if (currentCapsule == null || currentLauncher == null) {
+            System.out.println("\nIl vous manque des composant pour assembler votre fusée !\n");
+            pause();
+            return false;
+        }else {
+            System.out.println("Fusée assemblé ! - Choisissez un nom pour votre fusée : ");
+            String name = sc.nextLine();
+            Rocket actualRocket = new Rocket(name, currentLauncher, currentCapsule, currentListBoosters); 
+            System.out.println("Voici votre fusée : " + actualRocket.getName());
+            actualRocket.getComponents();
+            pause();
+            return true;
+        }
+    }
 
 
 
@@ -70,17 +121,22 @@ public class Simulator {
 
 
 
-
+    public void printComponents() {
+        System.out.println("\nPièces disponible : Capsule : " + (currentCapsule != null ? currentCapsule.getName() : "Aucune") + " | Lanceur : " + (currentLauncher != null ? currentLauncher.getName() : "Aucun") + " | Boosters : ");
+        for (Booster b : currentListBoosters) {
+            System.out.print(b.getName() + " ");
+        }
+    }
 
 
     public void startGame() {
         boolean inGame = true; 
 
-         
+        clearConsole(); 
         while (inGame) {
             
             System.out.println("\nChoisissez une action :\n");
-            System.out.println("1 - Construire une fusée");
+            System.out.println("1 - Assembler une fusée");
             System.out.println("2 - Choisir une mission");
             System.out.println("3 - Historique des missions");
             System.out.println("Q - Quitter\n");
@@ -117,15 +173,16 @@ public class Simulator {
     public void buildRocket(){
         boolean inMenu = true; 
 
-     
+        clearConsole(); 
         while (inMenu) {
 
-             
             System.out.println("\nChoisissez une action :\n");
             System.out.println("1 - Choisir le lanceur");
             System.out.println("2 - Choisir les boosters");
             System.out.println("3 - Choisir la capsule");
-            System.out.println("R - Retour\n");
+            System.out.print("4 - Assembler la fusée");
+            printComponents();
+            System.out.println("\nR - Retour\n");
 
             System.out.println("\nVotre choix :");
 
@@ -140,10 +197,15 @@ public class Simulator {
                     chooseLauncher();
                     break;
                 case "2":
-                    chooseBooster();
+                    if (canAddBooster()) {
+                        chooseBooster();
+                    }
                     break;
                 case "3": 
                     chooseCapsule();
+                    break;
+                case "4":
+                    assemble();
                     break;
                 default: 
                     System.out.println("\nChoix invalide\n");
@@ -157,7 +219,7 @@ public class Simulator {
     public void chooseCapsule() {
         boolean inMenu = true; 
 
-         
+        clearConsole();  
         while (inMenu) {
 
             System.out.println("\nChoisissez une capsule :\n");
@@ -183,6 +245,7 @@ public class Simulator {
                     System.out.println("\nVous avez choisi la capsule: " + selectedCapsule.getName());
 
                     if (pay(selectedCapsule)) {
+                        currentCapsule = selectedCapsule;
                         System.out.println("Capsule ajoutée à la fusée !");
                         inMenu = false;
                     }
@@ -200,7 +263,7 @@ public class Simulator {
     public void chooseLauncher() {
         boolean inMenu = true; 
 
-         
+        clearConsole();  
         while (inMenu) {
 
             System.out.println("\nChoisissez un lanceur :\n");
@@ -226,6 +289,7 @@ public class Simulator {
                     System.out.println("\nVous avez choisi le lanceur: " + selectedLauncher.getName());
 
                     if (pay(selectedLauncher)) {
+                        currentLauncher = selectedLauncher;
                         System.out.println("Lanceur ajoutée à la fusée !");
                         inMenu = false;
                     }
@@ -241,7 +305,7 @@ public class Simulator {
     public void chooseBooster() {
         boolean inMenu = true; 
 
-         
+        clearConsole();  
         while (inMenu) {
 
             System.out.println("\nChoisissez un booster :\n");
@@ -267,6 +331,7 @@ public class Simulator {
                     System.out.println("\nVous avez choisi le booster : " + selectedBooster.getName());
 
                     if (pay(selectedBooster)) {
+                        currentListBoosters.add(selectedBooster);
                         System.out.println("Booster ajoutée à la fusée !");
                         inMenu = false;
                     }
@@ -283,12 +348,13 @@ public class Simulator {
     public void chooseMission() {
         boolean inMenu = true; 
 
+        clearConsole();  
+
         System.out.println("\nChoisissez une mission :\n");
         printMissionList();
         System.out.println("R - Retour");
         System.out.println("\nVotre choix :");
 
-         
         while (inMenu) {
 
             String action = sc.nextLine();
@@ -313,7 +379,7 @@ public class Simulator {
     public void showHistory() {
         boolean inMenu = true; 
 
-         
+        clearConsole();  
         while (inMenu) {
 
             System.out.println("\nRécapitulatif des missions :\n");
@@ -345,7 +411,7 @@ public class Simulator {
     public void template() {
         boolean inMenu = true; 
 
-         
+        clearConsole();  
         while (inMenu) {
 
             String action = sc.nextLine();
