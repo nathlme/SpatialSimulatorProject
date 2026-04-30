@@ -210,20 +210,32 @@ public class Simulator {
 
             String action = sc.nextLine();
 
-            switch (action) {
-                case "R":
-                     
-                    inMenu = false; 
-                    break;
-                case "1": 
+            if (action.equalsIgnoreCase("R")) {
+                inMenu = false;
+                break;
+            }
 
-                    break;
-                default: 
+            try {
+                int choice = Integer.parseInt(action);
+
+                if (choice < 1 || choice > listLaunchers.size()) {
                     System.out.println("\nChoix invalide\n");
-                    break;
+                } else {
+                    Launcher selectedLauncher = listLaunchers.get(choice - 1);
+
+                    System.out.println("\nVous avez choisi le lanceur: " + selectedLauncher.getName());
+
+                    if (pay(selectedLauncher)) {
+                        System.out.println("Lanceur ajoutée à la fusée !");
+                        inMenu = false;
+                    }
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("\nVeuillez entrer un nombre valide ou R pour revenir.\n");
             }
         }
-    } 
+    }
 
 
     public void chooseBooster() {
@@ -239,17 +251,29 @@ public class Simulator {
 
             String action = sc.nextLine();
 
-            switch (action) {
-                case "R":
-                     
-                    inMenu = false; 
-                    break;
-                case "1": 
+            if (action.equalsIgnoreCase("R")) {
+                inMenu = false;
+                break;
+            }
 
-                    break;
-                default: 
+            try {
+                int choice = Integer.parseInt(action);
+
+                if (choice < 1 || choice > listBoosters.size()) {
                     System.out.println("\nChoix invalide\n");
-                    break;
+                } else {
+                    Booster selectedBooster = listBoosters.get(choice - 1);
+
+                    System.out.println("\nVous avez choisi le booster : " + selectedBooster.getName());
+
+                    if (pay(selectedBooster)) {
+                        System.out.println("Booster ajoutée à la fusée !");
+                        inMenu = false;
+                    }
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("\nVeuillez entrer un nombre valide ou R pour revenir.\n");
             }
         }
     }   
