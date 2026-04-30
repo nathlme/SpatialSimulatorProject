@@ -4,19 +4,26 @@ import java.util.List;
 import capsules.*;
 import launchers.*;
 import missions.*;
+import rockets.*;
+import common.SpaceComponent;
 
-public class Booster {
-    
-    public String name;
+
+public class Booster extends SpaceComponent {
+     
     public int    additionalBoost;
-    public int    mass;
-    public int    price;
+    public int    mass; 
 
     public Booster(String name, int additionalBoost, int mass, int price) {
-        this.name            = name;
+        super(name,price); 
         this.additionalBoost = additionalBoost;
-        this.mass            = mass;
-        this.price           = price;
+        this.mass            = mass; 
     }
+    
+    @Override
+    public String printInfo() {
+        String infos = "Nom : " + getName() + " - poussé additionel : " + additionalBoost + " kN - Poids : " + mass + " Tonnes - Price : " + getPrice() + " Millions"; 
+        return infos;
+    }
+
 
 }

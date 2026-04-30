@@ -1,7 +1,12 @@
+
+import java.util.List;
+import java.util.ArrayList;
+
 import boosters.*;
 import capsules.*;
 import launchers.*;
 import missions.*;
+import rockets.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,6 +23,12 @@ public class Main {
         launchers.add(new SaturneV());
         launchers.add(new SLS());
 
+        List<Mission> missions = new ArrayList<>();
+        missions.add(new EarthOrbit());
+        missions.add(new ISS());
+        missions.add(new Mars());
+        missions.add(new Moon());
+
         List<Booster> boosters = new ArrayList<>();
         boosters.add(new Booster("EAP Ariane", 6470, 270, 30));
         boosters.add(new Booster("SRB Shuttle", 12500, 590, 55));
@@ -25,7 +36,7 @@ public class Main {
 
         List<Launch> launches = new ArrayList<>();
         
-        Simulator simulator = new Simulator(capsules, boosters, launchers, launches);
+        Simulator simulator = new Simulator(capsules, boosters, launchers, launches, missions);         
         simulator.startGame();
 
     }

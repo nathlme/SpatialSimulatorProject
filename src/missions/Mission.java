@@ -3,6 +3,8 @@ package missions;
 import boosters.*;
 import capsules.*;
 import launchers.*;
+import rockets.*;
+
  
 public abstract class Mission {
 
@@ -24,11 +26,31 @@ public abstract class Mission {
 
 
     public double getNecessaryFuel(Rocket rocket) {
-        int rocketMass = rocket.getRocketTotalMass();
+        double rocketMass = rocket.getRocketTotalMass();
         double necessaryFuel = (rocketMass * distance * fuelCoeff) / 1000;
         return necessaryFuel;
     }
 
+    public boolean doesRequiresCrew() {
+        return requiresCrew;
+    }
+    
+    public String getName() {
+        return name;
+    }
 
+    public int getDuration() {
+        return returnTime - launchTime;
+    }
+
+    public int distance() {
+        return distance;
+    }
+
+    public String printInfo() {
+        String infos = "Nom : " + name + " - Besoin d'humain : " + requiresCrew + " - Distance : " + distance + " km - Durée : " + getDuration() + " h - Coefficient carburant : " + fuelCoeff; 
+        return infos;
+    }
+    
 
 }

@@ -3,6 +3,7 @@ import boosters.*;
 import capsules.*;
 import launchers.*;
 import missions.*;
+import rockets.*;
 
 public class Launch {
    Rocket  rocket;
@@ -22,15 +23,15 @@ public class Launch {
    }
 
    public boolean canGo() {
-      if (rocket.launcher.maxFuel < mission.getNecessaryFuel(rocket)) {
+      if (rocket.getLauncher().getLauncherMaxFuel() < mission.getNecessaryFuel(rocket)) {
          System.out.println("Échec du lancement - Carburant insuffisant !");
          return false; 
       }
-      if (rocket.launcher.boosterList.length() > rocket.launcher.maxBoosters) {
+      if (rocket.getBoosterCount() > rocket.getLauncher().getMaxBooster()) {
          System.out.println("Échec du lancement - Trop de boosters !");
          return false;
       }
-      if (mission.requiresCrew && !rocket.capsule.inhabited) {
+      if (mission.doesRequiresCrew() && !rocket.getCapsule().IsInhabited()) {
          System.out.println("Échec du lancement - Capsule incompatible avec une mission habitée !");
          return false; 
       }
@@ -41,14 +42,28 @@ public class Launch {
          return false;
       }
 
-      System.out.println("Tout est bon, lancement prêt !");
+      System.out.println("Lancement réussi !");
       return true; 
    }
 
 
    public double getLaunchPrice() {
       double totalLaunchPrice = rocket.getRocketTotalPrice() + (mission.getNecessaryFuel(rocket) * Constants.FUEL_PRICE_PER_TON);
-      System.out.println("Prix total du lancement " +totalLaunchPrice + " €");
+      System.out.println("Prix total du lancement " + totalLaunchPrice + " €");
       return totalLaunchPrice;
+   } 
+
+   public void saveLaunch() {
+      System.out.println("Résumé du lancement");
+
+      success = canGo();
+
+      if (success) { 
+         System.out.println("Mission : " + mission.getName() + " - durée : " + mission.getDuration() + "\n");
+         System.out.println("Fusée utilisé : " + rocket.getName() + " - Composition : \n - Capsule : " + rocket.getCapsule().getName() + "\n - Booster : " + rocket.getBoosterCount());
+      }
+
    }
+
+
 }

@@ -1,3 +1,4 @@
+package rockets; 
 
 import java.util.List;
 
@@ -20,7 +21,23 @@ public class Rocket {
         this.boosterList = boosterList;
     }
     
-    public int getRocketTotalMass() {
+    public Launcher getLauncher() {
+        return launcher;
+    }
+
+    public Capsule getCapsule() {
+        return capsule;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getBoosterCount() {
+        return boosterList.size();
+    }
+
+    public double getRocketTotalMass() {
         double totalMass = capsule.mass;
         
         for (Booster booster : boosterList) {
@@ -32,10 +49,10 @@ public class Rocket {
     }
 
     public int getRocketTotalPrice() {
-        int totalPrice = capsule.price + launcher.price;
+        int totalPrice = capsule.getPrice() + launcher.getPrice();
         
-        for (Boosters booster : boosterList) {
-            totalPrice += booster.price;
+        for (Booster booster : boosterList) {
+            totalPrice += booster.getPrice();
         }
         
         System.out.println("Le prix total de la fusée " + name + " est de " + totalPrice + "  €.");
@@ -43,7 +60,9 @@ public class Rocket {
     }
 
     public void getComponents() {
-        System.out.println("Capsules : " + capsule.name + "; Lanceurs : " + launcher.name + "; Boosters : " + boosterList);
+        System.out.println("Capsules : " + capsule.getName() + "; Lanceurs : " + launcher.getName() + "; Boosters : " + boosterList);
     }
+
+    
 
 }
