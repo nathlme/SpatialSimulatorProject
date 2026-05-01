@@ -44,7 +44,7 @@ public class Rocket {
             totalMass += booster.mass;
         }
 
-        System.out.println("Le poid total de la fussé " + name + " est de " + totalMass + " tonnes.");
+        System.out.println("\nLe poid total de la fusée " + name + " est de " + totalMass + " tonnes.");
         return totalMass;
     }
 
@@ -55,13 +55,25 @@ public class Rocket {
             totalPrice += booster.getPrice();
         }
         
-        System.out.println("Le prix total de la fusée " + name + " est de " + totalPrice + "  €.");
+        System.out.println("Le prix total de la fusée " + getName() + " est de " + totalPrice + "  €.");
         return totalPrice;
     }
 
     public void getComponents() {
-        System.out.println("Capsules : " + capsule.getName() + "; Lanceurs : " + launcher.getName() + "; Boosters : " + boosterList);
+
+    System.out.print("Capsule : " + capsule.getName());
+    System.out.print(" | Lanceur : " + launcher.getName());
+    System.out.print(" | Boosters : ");
+
+    if (boosterList == null || boosterList.isEmpty()) {
+        System.out.println("Aucun");
+    } else {
+        for (Booster b : boosterList) {
+            System.out.print(b.getName() + " ");
+        }
+        System.out.println();
     }
+}
 
     
 

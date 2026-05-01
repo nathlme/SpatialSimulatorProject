@@ -4,6 +4,8 @@ import capsules.*;
 import launchers.*;
 import missions.*;
 import rockets.*;
+import utils.ConsoleUtils;
+
 
 public class Launch {
    Rocket  rocket;
@@ -13,36 +15,48 @@ public class Launch {
    double   totalCost;
    String   date;
 
-   public Launch(Rocket rocket, Mission mission, boolean success, String reason, double totalCost, String date) {
+   public Launch(Rocket rocket, Mission mission, String date) {
         this.rocket    = rocket;
         this.mission   = mission;
-        this.success   = success;
-        this.reason    = reason;
-        this.totalCost = totalCost;
         this.date      = date;
    }
 
    public boolean canGo() {
+      if (rocket == null) {
+         reason = "Une fusée est réquise pour le lancement...";
+         System.out.println(reason);
+         ConsoleUtils.pause();
+         return false;
+      }
       if (rocket.getLauncher().getLauncherMaxFuel() < mission.getNecessaryFuel(rocket)) {
-         System.out.println("Échec du lancement - Carburant insuffisant !");
+         reason = "Carburant insuffisant !";
+         System.out.println("Échec du lancement - " + reason);
+         ConsoleUtils.pause();
          return false; 
       }
       if (rocket.getBoosterCount() > rocket.getLauncher().getMaxBooster()) {
-         System.out.println("Échec du lancement - Trop de boosters !");
+         reason = "Trop de boosters !";
+         System.out.println("Échec du lancement - " + reason);
+         ConsoleUtils.pause();
          return false;
       }
       if (mission.doesRequiresCrew() && !rocket.getCapsule().IsInhabited()) {
-         System.out.println("Échec du lancement - Capsule incompatible avec une mission habitée !");
+         reason = "Capsule incompatible avec une mission habitée !";
+         System.out.println("Échec du lancement - " + reason);
+         ConsoleUtils.pause();
          return false; 
       }
 
       double randomNum = (double)(Math.random() * 1); 
       if (randomNum < Constants.RANDOM_FAILURE_RATE) {
-         System.out.println("Échec du lancement - Anomalie technique imprévue !");
+         reason = "Anomalie technique imprévue !";
+         System.out.println("Échec du lancement - " + reason);
+         ConsoleUtils.pause();
          return false;
       }
-
+      
       System.out.println("Lancement réussi !");
+      ConsoleUtils.pause();
       return true; 
    }
 
@@ -54,13 +68,20 @@ public class Launch {
    } 
 
    public void saveLaunch() {
-      System.out.println("Résumé du lancement");
-
+       
       success = canGo();
 
+      System.out.println("Résumé du lancement");
+
       if (success) { 
-         System.out.println("Mission : " + mission.getName() + " - durée : " + mission.getDuration() + "\n");
-         System.out.println("Fusée utilisé : " + rocket.getName() + " - Composition : \n - Capsule : " + rocket.getCapsule().getName() + "\n - Booster : " + rocket.getBoosterCount());
+         System.out.println("Mission : " + mission.getName() + " - durée : " + mission.getDuration() + "h\n");
+         System.out.println("Fusée utilisé : " + rocket.getName() + " - Composition : \n - Capsule : " + rocket.getCapsule().getName() + "\n - Lanceur : " + rocket.getLauncher().getName() + "\n - Booster : " + rocket.getBoosterCount());
+         rocket.getRocketTotalPrice();
+         getLaunchPrice();
+         ConsoleUtils.pause();
+      }else {
+         System.out.println("Échec du lancement - " + reason);
+         ConsoleUtils.pause();
       }
 
    }
