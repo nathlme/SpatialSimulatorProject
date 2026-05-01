@@ -2,6 +2,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import utils.ConsoleUtils;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import boosters.*;
 import capsules.*;
@@ -9,6 +12,7 @@ import launchers.*;
 import missions.*;
 import rockets.*;
 import common.SpaceComponent;
+
 
 
 public class Simulator {
@@ -24,8 +28,10 @@ public class Simulator {
     Mission       currentMission;
     Rocket actualRocket;
 
-    private double money = 999999999;
-    private long fuelQuantity = 0;
+    private double money = 9999999;
+
+    private static final String HISTORY_FILE = "history.txt";
+     
 
     private static Scanner sc = new Scanner(System.in);
 
@@ -39,6 +45,21 @@ public class Simulator {
         this.currentListBoosters = new ArrayList<>();
     }
 
+
+    public String getCurrentDate() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return now.format(formatter);
+    }
+
+    public void saveLaunchInFile(Launch launch) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(HISTORY_FILE, true))) {
+            writer.write(launch.toFileLine());
+            writer.newLine();
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la sauvegarde de l'historique.");
+        }
+    }
 
     public void printComponentList(List<? extends SpaceComponent> componentList) {
         int i = 1;
@@ -62,7 +83,7 @@ public class Simulator {
             if (currentListBoosters.size() < currentLauncher.getMaxBooster()) {
                 return true;
             }else {
-                System.out.println("Vous ne pouvez plus ajouter de booster avec ce lanceur !");
+                System.out.println("\nVous ne pouvez pas ajouter plus de booster avec le lanceur actuel !");
                 ConsoleUtils.pause();
                 return false;
             }
@@ -80,7 +101,7 @@ public class Simulator {
             ConsoleUtils.pause();
             return false;
         }else {
-            System.out.println("Fusée assemblé ! - Choisissez un nom pour votre fusée : ");
+            System.out.println("\nFusée assemblé ! - Choisissez un nom pour votre fusée : ");
             String name = sc.nextLine();
             this.actualRocket = new Rocket(name, currentLauncher, currentCapsule, currentListBoosters); 
             System.out.println("\nVoici votre fusée : " + actualRocket.getName());
@@ -113,24 +134,33 @@ public class Simulator {
 
 
     public boolean buyFuel() {
-        System.out.println("Quelle quantité de carburant voulez-vous acheter (Tonne) ? - (" + Constants.FUEL_PRICE_PER_TON + " euros/tonne)\n");
-        String q = sc.nextLine();
-        long quantite = Long.parseLong(q);
-        double price = Constants.FUEL_PRICE_PER_TON * quantite;
-        if (price > money) {
-            System.out.println("Achat impossible : pas assez d'argent.");
-            System.out.println("Prix : " + price + " euros");
-            System.out.println("Solde : " + money + "M\n");
+        if (currentLauncher != null) {
+
+            System.out.println("Quelle quantité de carburant voulez-vous acheter (Tonne) ? - (" + Constants.FUEL_PRICE_PER_TON + " euros/tonne)\n");
+            String q = sc.nextLine();
+
+            long quantite = Long.parseLong(q);
+            double price = Constants.FUEL_PRICE_PER_TON * quantite;
+
+            if (price > money) {
+                System.out.println("Achat impossible : pas assez d'argent.");
+                System.out.println("Prix : " + price + " euros");
+                System.out.println("Solde : " + money + "M\n");
+                return false;
+            }
+            
+            money -= price;
+            currentLauncher.fuelQuantity += quantite;
+
+            System.out.println("Achat validé : " + quantite + " tonnes de carburant pour " + price + " euros");
+            System.out.println("Solde restant : " + money + "M\n");
+
+            return true;
+        }else {
+            System.out.println("\nVeuillez acheter un lanceur d'abord !");
             return false;
         }
-        
-        money -= price;
-        fuelQuantity += quantite;
-
-        System.out.println("Achat validé : " + quantite + " tonnes de carburant pour " + price + " euros");
-        System.out.println("Solde restant : " + money + "M\n");
-
-        return true;
+         
     }
 
     public void printComponents() {
@@ -147,8 +177,8 @@ public class Simulator {
         ConsoleUtils.clearConsole(); 
         while (inGame) {
             
-            System.out.println("\nChoisissez une action :\n");
-            System.out.println("1 - Assembler une fusée");
+            System.out.println("\n==== CHOISISSEZ UNE ACTION ====\n");
+            System.out.println("1 - Configurer une fusée");
             System.out.println("2 - Choisir une mission");
             System.out.println("3 - Historique des missions");
             System.out.println("4 - Acheter du carburant");
@@ -191,11 +221,11 @@ public class Simulator {
         ConsoleUtils.clearConsole(); 
         while (inMenu) {
 
-            System.out.println("\nChoisissez une action :\n");
+            System.out.println("\n==== CHOISISSEZ UNE ACTION ====\n");
             System.out.println("1 - Choisir le lanceur");
             System.out.println("2 - Choisir les boosters");
             System.out.println("3 - Choisir la capsule");
-            System.out.print("4 - Assembler la fusée");
+            System.out.println("\n4 - Assembler la fusée");
             printComponents();
             System.out.println("\nR - Retour\n");
 
@@ -205,7 +235,7 @@ public class Simulator {
 
             switch (action) {
                 case "R":
-                     
+                    ConsoleUtils.clearConsole(); 
                     inMenu = false;
                     break;
                 case "1":
@@ -237,7 +267,7 @@ public class Simulator {
         ConsoleUtils.clearConsole();  
         while (inMenu) {
 
-            System.out.println("\nChoisissez une capsule :\n");
+            System.out.println("\n==== CHOISISSEZ UNE CAPSULE ====\n");
             printComponentList(listCapsules);
             System.out.println("R - Retour");
             System.out.println("\nVotre choix :");
@@ -245,6 +275,7 @@ public class Simulator {
             String action = sc.nextLine();
 
             if (action.equalsIgnoreCase("R")) {
+                ConsoleUtils.clearConsole(); 
                 inMenu = false;
                 break;
             }
@@ -281,7 +312,7 @@ public class Simulator {
         ConsoleUtils.clearConsole();  
         while (inMenu) {
 
-            System.out.println("\nChoisissez un lanceur :\n");
+            System.out.println("\n==== CHOISISSEZ UN LANCEUR ====\n");
             printComponentList(listLaunchers);
             System.out.println("R - Retour");
             System.out.println("\nVotre choix :");
@@ -289,6 +320,7 @@ public class Simulator {
             String action = sc.nextLine();
 
             if (action.equalsIgnoreCase("R")) {
+                ConsoleUtils.clearConsole(); 
                 inMenu = false;
                 break;
             }
@@ -323,7 +355,7 @@ public class Simulator {
         ConsoleUtils.clearConsole();  
         while (inMenu) {
 
-            System.out.println("\nChoisissez un booster :\n");
+            System.out.println("\n==== CHOISISSEZ UN BOOSTER ====\n");
             printComponentList(listBoosters);
             System.out.println("R - Retour");
             System.out.println("\nVotre choix :");
@@ -331,6 +363,7 @@ public class Simulator {
             String action = sc.nextLine();
 
             if (action.equalsIgnoreCase("R")) {
+                ConsoleUtils.clearConsole(); 
                 inMenu = false;
                 break;
             }
@@ -365,7 +398,7 @@ public class Simulator {
 
         ConsoleUtils.clearConsole();  
 
-        System.out.println("\nChoisissez une mission :\n");
+        System.out.println("\n==== CHOISISSEZ UNE MISSION ====\n");
         printMissionList();
         System.out.println("R - Retour");
         System.out.println("\nVotre choix :");
@@ -375,6 +408,7 @@ public class Simulator {
             String action = sc.nextLine();
 
             if (action.equalsIgnoreCase("R")) {
+                ConsoleUtils.clearConsole(); 
                 inMenu = false;
                 break;
             }
@@ -403,31 +437,26 @@ public class Simulator {
 
 
     public void showHistory() {
-        boolean inMenu = true; 
+        File file = new File(HISTORY_FILE);
 
-        ConsoleUtils.clearConsole();  
-        while (inMenu) {
-
-            System.out.println("\nRécapitulatif des missions :\n");
-            System.out.println("R - Retour");
-            System.out.println("\nVotre choix :");
-
-            String action = sc.nextLine();
-
-            switch (action) {
-                case "R":
-                     
-                    inMenu = false;  
-                    break;
-                case "1": 
-
-                    break;
-                default: 
-                    System.out.println("\nChoix invalide\n");
-                    break;
-            }
+        if (!file.exists()) {
+            System.out.println("Aucun historique trouvé.");
+            return;
         }
-    } 
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(HISTORY_FILE))) {
+            String line;
+
+            System.out.println("\n===== HISTORIQUE DES LANCEMENTS =====\n");
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la lecture de l'historique.");
+        }
+    }
 
 
     public void startLaunch() {
@@ -436,7 +465,7 @@ public class Simulator {
         ConsoleUtils.clearConsole();  
         while (inMenu) {
 
-            System.out.println("\nPréparatif du lancement\n");
+            System.out.println("\n==== PRÉPARATIF DU LANCEMENT ====\n");
             System.out.println("1 - Partir pour la mission : " + currentMission.getName());
             System.out.println("2 - Conditions du lancement");
             System.out.println("R - Retour");
@@ -446,11 +475,15 @@ public class Simulator {
 
             switch (action) {
                 case "R":
+                    ConsoleUtils.clearConsole(); 
                     inMenu = false;  
                     break;
                 case "1": 
-                    Launch actualLaunch = new Launch(actualRocket, currentMission,"Aujourd'hui");
-                    actualLaunch.saveLaunch();
+                    Launch actualLaunch = new Launch(actualRocket, currentMission, getCurrentDate());
+                    if (actualLaunch.printLaunch()) {
+                        listLaunch.add(actualLaunch);
+                        saveLaunchInFile(actualLaunch);
+                    }  
                     break;
                 default: 
                     System.out.println("\nChoix invalide\n");
@@ -471,7 +504,7 @@ public class Simulator {
 
             switch (action) {
                 case "R":
-                     
+                    ConsoleUtils.clearConsole();  
                     inMenu = false;  
                     break;
                 case "1": 

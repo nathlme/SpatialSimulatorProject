@@ -15,6 +15,8 @@ public abstract class Launcher extends SpaceComponent{
     public int       maxFuel;
     public int       charge; 
 
+    public long fuelQuantity = 0;
+
     public Launcher(String name, boolean inhabited,int maxBoosters, int maxFuel,int charge, int price) {
         super(name,price); 
         this.inhabited   = inhabited;
@@ -29,6 +31,10 @@ public abstract class Launcher extends SpaceComponent{
 
     public int getLauncherMaxFuel() {
         return maxFuel;
+    }
+
+    public int getCharge(){
+        return charge;
     }
     
     @Override

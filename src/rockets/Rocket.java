@@ -44,7 +44,7 @@ public class Rocket {
             totalMass += booster.mass;
         }
 
-        System.out.println("\nLe poid total de la fusée " + name + " est de " + totalMass + " tonnes.");
+        // System.out.println("\nLe poid total de la fusée " + name + " est de " + totalMass + " tonnes.");
         return totalMass;
     }
 
@@ -54,8 +54,6 @@ public class Rocket {
         for (Booster booster : boosterList) {
             totalPrice += booster.getPrice();
         }
-        
-        System.out.println("Le prix total de la fusée " + getName() + " est de " + totalPrice + "  €.");
         return totalPrice;
     }
 

@@ -9,6 +9,7 @@ public class ConsoleUtils {
     public static void pause() {
         System.out.print("\nAppuyez sur Entrée pour continuer...\n");
         sc.nextLine();
+        clearConsole();
     }
     
     public static void clearConsole() {
