@@ -1,6 +1,7 @@
 package rockets; 
 
 import java.util.List;
+import java.util.ArrayList;
 
 import boosters.*;
 import capsules.*;
@@ -8,19 +9,24 @@ import launchers.*;
 import missions.*;
 
 public class Rocket {
-    List<Booster>  boosterList;
-    Launcher       launcher;
-    Capsule        capsule;
+    private List<Booster>  boosterList;
+    private Launcher       launcher;
+    private Capsule        capsule;
 
-    String  name;
+    private String  name;
 
-    public Rocket(String name, Launcher launcher, Capsule capsule, List<Booster>  boosterList){
-        this.name        = name ;
-        this.launcher    = launcher;
-        this.capsule     = capsule;
-        this.boosterList = boosterList;
+    public Rocket(String name, Launcher launcher, Capsule capsule) {
+        this.name = name;
+        this.launcher = launcher;
+        this.capsule = capsule;
+        this.boosterList = new ArrayList<>();
     }
     
+    public Rocket(String name, Launcher launcher, Capsule capsule, List<Booster> boosterList) {
+        this(name, launcher, capsule);
+        this.boosterList.addAll(boosterList);
+    }
+
     public Launcher getLauncher() {
         return launcher;
     }
@@ -38,10 +44,10 @@ public class Rocket {
     }
 
     public double getRocketTotalMass() {
-        double totalMass = capsule.mass;
+        double totalMass = capsule.getMass();
         
         for (Booster booster : boosterList) {
-            totalMass += booster.mass;
+            totalMass += booster.getMass();
         }
 
         // System.out.println("\nLe poid total de la fusée " + name + " est de " + totalMass + " tonnes.");
@@ -57,22 +63,23 @@ public class Rocket {
         return totalPrice;
     }
 
-    public void getComponents() {
+    public void printComponents() {
 
-    System.out.print("Capsule : " + capsule.getName());
-    System.out.print(" | Lanceur : " + launcher.getName());
-    System.out.print(" | Boosters : ");
+        System.out.print("Capsule : " + capsule.getName());
+        System.out.print(" | Lanceur : " + launcher.getName());
+        System.out.print(" | Boosters : ");
 
-    if (boosterList == null || boosterList.isEmpty()) {
-        System.out.println("Aucun");
-    } else {
-        for (Booster b : boosterList) {
-            System.out.print(b.getName() + " ");
+        if (boosterList == null || boosterList.isEmpty()) {
+            System.out.println("Aucun");
+        } else {
+            for (Booster b : boosterList) {
+                System.out.print(b.getName() + " ");
+            }
+            System.out.println();
         }
-        System.out.println();
     }
-}
 
+    
     
 
 }

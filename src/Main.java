@@ -28,6 +28,7 @@ public class Main {
         missions.add(new ISS());
         missions.add(new Mars());
         missions.add(new Moon());
+        missions.add(new Jupiter());
 
         List<Booster> boosters = new ArrayList<>();
         boosters.add(new Booster("EAP Ariane", 6470, 270, 30));
@@ -35,8 +36,8 @@ public class Main {
         boosters.add(new Booster("BE-3", 490, 25, 12));
 
         List<Launch> launches = new ArrayList<>();
-        
-        Simulator simulator = new Simulator(capsules, boosters, launchers, launches, missions);         
+    
+        Simulator simulator = Simulator.getInstance(capsules, boosters, launchers, launches, missions);   
         simulator.startGame();
 
     }

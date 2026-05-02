@@ -5,6 +5,7 @@ import launchers.*;
 import missions.*;
 import rockets.*;
 import utils.ConsoleUtils;
+import exceptions.NotEnoughtFuelExeption;
 
 
 public class Launch {
@@ -21,17 +22,30 @@ public class Launch {
         this.date      = date;
    }
 
+   private void checkFuel() throws NotEnoughtFuelExeption {
+      double necessaryFuel = mission.getNecessaryFuel(rocket);
+      int maxFuel = rocket.getLauncher().getLauncherMaxFuel();
+
+      if (maxFuel < necessaryFuel) {
+         throw new NotEnoughtFuelExeption("Carburant insuffisant !");
+      }
+   }
+
    public boolean canGo() {
       if (rocket == null) {
          reason = "Une fusée est réquise pour le lancement...";
          ConsoleUtils.pause();
          return false;
       }
-      if (rocket.getLauncher().getLauncherMaxFuel() < mission.getNecessaryFuel(rocket)) {
-         reason = "Carburant insuffisant !";
+
+      try {
+         checkFuel();
+      } catch (NotEnoughtFuelExeption e) {
+         reason = e.getMessage();
          ConsoleUtils.pause();
-         return false; 
+         return false;
       }
+
       if (rocket.getRocketTotalMass() > rocket.getLauncher().getCharge()) {
          reason = "Surcharge dépassée !";
          ConsoleUtils.pause();
@@ -42,7 +56,7 @@ public class Launch {
          ConsoleUtils.pause();
          return false;
       }
-      if (mission.doesRequiresCrew() && !rocket.getCapsule().IsInhabited()) {
+      if (mission.doesRequiresCrew() && !rocket.getCapsule().isInhabited()) {
          reason = "Capsule incompatible avec une mission habitée !";
          ConsoleUtils.pause();
          return false; 
@@ -63,12 +77,18 @@ public class Launch {
 
 
    public double getLaunchPrice() {
-      double totalLaunchPrice = rocket.getRocketTotalPrice() + (mission.getNecessaryFuel(rocket) * Constants.FUEL_PRICE_PER_TON);
+      double fuelCostInEuros = mission.getNecessaryFuel(rocket) * Constants.FUEL_PRICE_PER_TON;
+      double fuelCostInMillions = fuelCostInEuros / 1_000_000;
+
+      double totalLaunchPrice = rocket.getRocketTotalPrice() + fuelCostInMillions;
+       
+
       System.out.println("Prix total du lancement " + totalLaunchPrice + " Millions d'euros");
+      totalCost = totalLaunchPrice;
       return totalLaunchPrice;
    } 
 
-   public boolean printLaunch() {
+   public boolean runLaunch() {
        
       success = canGo();
 
@@ -95,7 +115,7 @@ public class Launch {
          + mission.getName() + " - "
          + success + " - "
          + reason + " - "
-         + totalCost;
+         + totalCost + " Millions d'euros ";
    }
 
 }

@@ -8,12 +8,12 @@ import rockets.*;
  
 public abstract class Mission {
 
-    public  String  name;
-    public  boolean requiresCrew;
-    public  int     distance;
-    public  int     launchTime;
-    public  int     returnTime;
-    public  double  fuelCoeff;
+    private  String  name;
+    private  boolean requiresCrew;
+    private  int     distance;
+    private  int     launchTime;
+    private  int     returnTime;
+    private  double  fuelCoeff;
 
     public Mission(String name, boolean requiresCrew, int distance, int launchTime,int returnTime, double fuelCoeff) {
         this.name         = name;
@@ -43,8 +43,12 @@ public abstract class Mission {
         return returnTime - launchTime;
     }
 
-    public int distance() {
+    public int getDistance() {
         return distance;
+    }
+
+    public double getFuelCoeff() {
+        return fuelCoeff;
     }
 
     public String printInfo() {

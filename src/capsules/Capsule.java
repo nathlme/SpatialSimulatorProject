@@ -10,9 +10,9 @@ import common.SpaceComponent;
 public abstract class Capsule extends SpaceComponent {
     
      
-    public  boolean   inhabited;
-    public  int       maxPerson;
-    public  double    mass; 
+    private  boolean   inhabited;
+    private  int       maxPerson;
+    private  double    mass; 
 
     public Capsule(String name, boolean inhabited, int maxPerson, double mass, int price) {
         super(name,price); 
@@ -21,10 +21,17 @@ public abstract class Capsule extends SpaceComponent {
         this.mass       = mass; 
     }
 
-    public boolean IsInhabited(){
+    public boolean isInhabited() {
         return inhabited;
     }
 
+    public int getMaxPerson() {
+        return maxPerson;
+    }
+
+    public double getMass() {
+        return mass;
+    }
 
 
     @Override 

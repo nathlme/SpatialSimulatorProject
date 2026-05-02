@@ -10,12 +10,10 @@ import common.SpaceComponent;
 
 public abstract class Launcher extends SpaceComponent{
     
-    public boolean   inhabited;
-    public int       maxBoosters;
-    public int       maxFuel;
-    public int       charge; 
-
-    public long fuelQuantity = 0;
+    private boolean   inhabited;
+    private int       maxBoosters;
+    private int       maxFuel;
+    private int       charge; 
 
     public Launcher(String name, boolean inhabited,int maxBoosters, int maxFuel,int charge, int price) {
         super(name,price); 
@@ -25,6 +23,12 @@ public abstract class Launcher extends SpaceComponent{
         this.charge      = charge; 
     }
     
+    public abstract String getSpecificity();
+
+    public boolean isInhabited() {
+        return inhabited;
+    }
+
     public int getMaxBooster() {
         return maxBoosters;
     }
@@ -39,7 +43,8 @@ public abstract class Launcher extends SpaceComponent{
     
     @Override
     public String printInfo() {
-        String infos = "Nom : " + getName() + " - Habitée : " + inhabited + " - Nombre de booster maximum : " + maxBoosters + " - Carburant max : " + maxFuel + " Tonnes - Charge utile : " + charge + " - Price : " + getPrice() + " Millions"; 
+        String infos = "Nom : " + getName() + " - Habitée : " + inhabited + " - Nombre de booster maximum : " + maxBoosters + " - Carburant max : " + maxFuel + " Tonnes - Charge utile : " + charge + " - Price : " + getPrice() + " Millions - Spécificité : " + getSpecificity();
+; 
         return infos;
     }
 

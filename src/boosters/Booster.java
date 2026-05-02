@@ -10,14 +10,24 @@ import common.SpaceComponent;
 
 public class Booster extends SpaceComponent {
      
-    public int    additionalBoost;
-    public int    mass; 
+    private int    additionalBoost;
+    private int    mass; 
 
     public Booster(String name, int additionalBoost, int mass, int price) {
         super(name,price); 
         this.additionalBoost = additionalBoost;
         this.mass            = mass; 
     }
+    
+    public int getAdditionalBoost() {
+        return additionalBoost;
+    }
+
+
+    public int getMass(){
+        return mass;    
+    }
+
     
     @Override
     public String printInfo() {
