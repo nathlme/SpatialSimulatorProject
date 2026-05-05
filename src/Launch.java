@@ -55,8 +55,14 @@ public class Launch {
          ConsoleUtils.pause();
          return false;
       }
-      if (mission.doesRequiresCrew() && !rocket.getCapsule().isInhabited()) {
+      if (mission.doesRequiresCrew() && !rocket.getCapsule().isInhabited() ) {
          reason = "Capsule incompatible avec une mission habitée !";
+         ConsoleUtils.pause();
+         return false; 
+      }
+      
+      if (!mission.doesRequiresCrew() && rocket.getCapsule().isInhabited() ) {
+         reason = "Capsule incompatible avec une mission inhabité !";
          ConsoleUtils.pause();
          return false; 
       }
