@@ -1,4 +1,3 @@
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,6 +8,8 @@ import missions.*;
 import rockets.*;
 
 public class Main {
+
+    // Initialize all game components and start the simulator
     public static void main(String[] args) {
         
         List<Capsule> capsules = new ArrayList<>();

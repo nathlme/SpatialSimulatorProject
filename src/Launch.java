@@ -1,4 +1,3 @@
-
 import missions.*;
 import rockets.*;
 import utils.ConsoleUtils;
@@ -13,12 +12,14 @@ public class Launch {
    double   totalCost;
    String   date;
 
+   // Constructeur
    public Launch(Rocket rocket, Mission mission, String date) {
         this.rocket    = rocket;
         this.mission   = mission;
         this.date      = date;
    }
 
+   // Verify if the rocket has enough fuel for the selected mission
    private void checkFuel() throws NotEnoughtFuelExeption {
       double necessaryFuel = mission.getNecessaryFuel(rocket);
       int maxFuel = rocket.getLauncher().getLauncherMaxFuel();
@@ -28,6 +29,7 @@ public class Launch {
       }
    }
 
+   // Verify if the rocket can go to the selected mission
    public boolean canGo() {
       if (rocket == null) {
          reason = "Une fusée est réquise pour le lancement...";
@@ -73,6 +75,7 @@ public class Launch {
    }
 
 
+   // Calculate and print the total launch price
    public double getLaunchPrice() {
       double fuelCostInEuros = mission.getNecessaryFuel(rocket) * Constants.FUEL_PRICE_PER_TON;
       double fuelCostInMillions = fuelCostInEuros / 1_000_000;
@@ -85,6 +88,7 @@ public class Launch {
       return totalLaunchPrice;
    } 
 
+   // Run the launch and print the launch summary
    public boolean runLaunch() {
        
       success = canGo();
@@ -107,6 +111,7 @@ public class Launch {
    }
 
 
+   // Format the launch data to save it in the history file
    public String toFileLine() {
       return date + " - "
          + rocket.getName() + " - "

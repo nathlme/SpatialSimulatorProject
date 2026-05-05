@@ -14,6 +14,7 @@ public class Rocket {
 
     private String  name;
 
+    // Constructeur without boosters
     public Rocket(String name, Launcher launcher, Capsule capsule) {
         this.name = name;
         this.launcher = launcher;
@@ -21,27 +22,33 @@ public class Rocket {
         this.boosterList = new ArrayList<>();
     }
     
+    // Constructor overload with boosters
     public Rocket(String name, Launcher launcher, Capsule capsule, List<Booster> boosterList) {
         this(name, launcher, capsule);
         this.boosterList.addAll(boosterList);
     }
 
+    // Get the rocket launcher
     public Launcher getLauncher() {
         return launcher;
     }
 
+    // Get the rocket capsule
     public Capsule getCapsule() {
         return capsule;
     }
 
+    // Get the rocket name
     public String getName() {
         return name;
     }
 
+    // Get the number of boosters used by the rocket
     public int getBoosterCount() {
         return boosterList.size();
     }
 
+    // Calculate and return the total mass of the rocket
     public double getRocketTotalMass() {
         double totalMass = capsule.getMass();
         
@@ -53,6 +60,7 @@ public class Rocket {
         return totalMass;
     }
 
+    // Calculate and return the total price of the rocket
     public int getRocketTotalPrice() {
         int totalPrice = capsule.getPrice() + launcher.getPrice();
         
@@ -62,6 +70,7 @@ public class Rocket {
         return totalPrice;
     }
 
+    // Print every component used by the rocket
     public void printComponents() {
 
         System.out.print("Capsule : " + capsule.getName());
@@ -77,8 +86,4 @@ public class Rocket {
             System.out.println();
         }
     }
-
-    
-    
-
 }
