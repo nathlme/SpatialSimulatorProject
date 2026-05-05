@@ -36,6 +36,8 @@ public class Simulator {
 
     private static Simulator instance;
 
+
+    // Constructeur 
     private Simulator(List<Capsule> listCapsules, List<Booster> listBoosters, List<Launcher> listLaunchers, List<Launch> listLaunch, List<Mission> listMission) {
         this.listCapsules  = listCapsules;
         this.listBoosters  = listBoosters;
@@ -48,6 +50,8 @@ public class Simulator {
         loadHistory();
     }
 
+
+    // Constructor overload
     public static Simulator getInstance(List<Capsule> listCapsules, List<Booster> listBoosters, List<Launcher> listLaunchers, List<Launch> listLaunch, List<Mission> listMission) {
         if (instance == null) {
             instance = new Simulator( listCapsules, listBoosters, listLaunchers, listLaunch, listMission);
@@ -56,12 +60,16 @@ public class Simulator {
         return instance;
     }
 
+
+    // Get the current date
     public String getCurrentDate() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return now.format(formatter);
     }
 
+
+    // Save the launch in the file history.txt
     public void saveLaunchInFile(Launch launch) {
         
         String line = launch.toFileLine();
@@ -77,6 +85,8 @@ public class Simulator {
         }
     }
 
+
+    // Print the list of components from the component list in argument
     public void printComponentList(List<? extends SpaceComponent> componentList) {
         int i = 1;
 
@@ -86,6 +96,7 @@ public class Simulator {
         }
     }
      
+    // Print the list of actual possible missions
     public void printMissionList() {
         int i = 1;         
         for (Mission mission : listMission) {
@@ -94,6 +105,8 @@ public class Simulator {
         }
     }
 
+
+    // Verify if the current launcher can handle boosters
     public boolean canAddBooster(){
         if (currentLauncher != null) {
             if (currentListBoosters.size() < currentLauncher.getMaxBooster()) {
@@ -111,6 +124,7 @@ public class Simulator {
     }
 
 
+    // Verify if the user has enough components to build a rocket and build it if yes 
     public boolean assemble() {
         if (currentCapsule == null || currentLauncher == null) {
             System.out.println("\nIl vous manque des composant pour assembler votre fusée !\n");
@@ -136,11 +150,7 @@ public class Simulator {
     }
 
 
-
-
-
-
-
+    // Print every components the user took 
     public void printComponents() {
         System.out.println("\nPièces disponible : Capsule : " + (currentCapsule != null ? currentCapsule.getName() : "Aucune") + " | Lanceur : " + (currentLauncher != null ? currentLauncher.getName() : "Aucun") + " | Boosters : ");
         for (Booster b : currentListBoosters) {
@@ -149,6 +159,7 @@ public class Simulator {
     }
 
 
+    // Print the main menu
     public void startGame() {
         boolean inGame = true; 
 
@@ -189,7 +200,7 @@ public class Simulator {
     }   
 
 
-
+    // Allow the user to choose his rockets components and build a rocket if there is enough components
     public void buildRocket(){
         boolean inMenu = true; 
 
@@ -237,7 +248,7 @@ public class Simulator {
     }
 
 
-    
+    // Allow the user to add a capsule to his rocket in a list of capsules
     public void chooseCapsule() {
         boolean inMenu = true; 
 
@@ -282,7 +293,7 @@ public class Simulator {
 
 
 
-
+    // Allow the user to add a launcher to his rocket in a list of launchers
     public void chooseLauncher() {
         boolean inMenu = true; 
 
@@ -328,6 +339,7 @@ public class Simulator {
     }
 
 
+    // Allow the user to add a booster to his rocket in a list of boosters
     public void chooseBooster() {
         boolean inMenu = true; 
 
@@ -373,6 +385,7 @@ public class Simulator {
 
 
 
+    // Allow the user to choose between multiple missions
     public void chooseMission() {
         boolean inMenu = true; 
 
@@ -416,6 +429,7 @@ public class Simulator {
     }
 
 
+    // Charge the history of the pasts missions
     public void loadHistory() {
         File file = new File(HISTORY_FILE);
 
@@ -439,6 +453,8 @@ public class Simulator {
         }
     }
 
+
+    // Print the history of the pasts missions
     public void showHistory() {
         ConsoleUtils.clearConsole();
 
@@ -458,6 +474,7 @@ public class Simulator {
     }
 
 
+    // Ask to the user if he want to go to the mission and create a new launch object if yes 
     public void startLaunch() {
         boolean inMenu = true; 
 
