@@ -1,7 +1,4 @@
 
-import boosters.*;
-import capsules.*;
-import launchers.*;
 import missions.*;
 import rockets.*;
 import utils.ConsoleUtils;

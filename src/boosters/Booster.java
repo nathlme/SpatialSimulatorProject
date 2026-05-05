@@ -1,10 +1,5 @@
 package boosters;
 
-import java.util.List;
-import capsules.*;
-import launchers.*;
-import missions.*;
-import rockets.*;
 import common.SpaceComponent;
 
 

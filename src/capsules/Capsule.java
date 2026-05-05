@@ -1,9 +1,6 @@
 package capsules;
 
-import boosters.*;
-import launchers.*;
-import missions.*;
-import rockets.*;
+
 import common.SpaceComponent;
 
 

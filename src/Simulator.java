@@ -36,8 +36,7 @@ public class Simulator {
 
     private static Simulator instance;
 
-
-    // Constructeur 
+    // Constructeur
     private Simulator(List<Capsule> listCapsules, List<Booster> listBoosters, List<Launcher> listLaunchers, List<Launch> listLaunch, List<Mission> listMission) {
         this.listCapsules  = listCapsules;
         this.listBoosters  = listBoosters;
@@ -49,7 +48,6 @@ public class Simulator {
 
         loadHistory();
     }
-
 
     // Constructor overload
     public static Simulator getInstance(List<Capsule> listCapsules, List<Booster> listBoosters, List<Launcher> listLaunchers, List<Launch> listLaunch, List<Mission> listMission) {

@@ -1,9 +1,5 @@
 package missions;
 
-import boosters.*;
-import capsules.*;
-import launchers.*;
- 
 public class Mars extends Mission {
 
     public Mars() {
