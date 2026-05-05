@@ -180,7 +180,8 @@ public class Simulator {
                     showHistory();
                     break;
                 default: 
-                    System.out.println("\nChoix invalide\n");
+                    ConsoleUtils.clearConsole();
+                    System.out.println("\n==== Choix invalide ====\n");
                     break;
             }
         }
@@ -228,7 +229,8 @@ public class Simulator {
                     assemble();
                     break;
                 default: 
-                    System.out.println("\nChoix invalide\n");
+                    ConsoleUtils.clearConsole();
+                    System.out.println("\n==== Choix invalide ====\n");
                     break;
             }
         }
@@ -272,7 +274,8 @@ public class Simulator {
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("\nVeuillez entrer un nombre valide ou R pour revenir.\n");
+                ConsoleUtils.clearConsole();
+                System.out.println("\n==== Choix invalide ====\n");
             }
         }
     }   
@@ -318,7 +321,8 @@ public class Simulator {
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("\nVeuillez entrer un nombre valide ou R pour revenir.\n");
+                ConsoleUtils.clearConsole();
+                System.out.println("\n==== Choix invalide ====\n");
             }
         }
     }
@@ -361,7 +365,8 @@ public class Simulator {
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("\nVeuillez entrer un nombre valide ou R pour revenir.\n");
+                ConsoleUtils.clearConsole();
+                System.out.println("\n==== Choix invalide ====\n");
             }
         }
     }   
@@ -404,7 +409,8 @@ public class Simulator {
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("\nVeuillez entrer un nombre valide ou R pour revenir.\n");
+                ConsoleUtils.clearConsole();
+                System.out.println("\n==== Choix invalide ====\n");
             }
         }
     }
@@ -485,7 +491,8 @@ public class Simulator {
                     saveLaunchInFile(actualLaunch);
                     break;
                 default: 
-                    System.out.println("\nChoix invalide\n");
+                    ConsoleUtils.clearConsole();
+                    System.out.println("\n==== Choix invalide ====\n");
                     break;
             }
         }

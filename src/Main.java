@@ -31,9 +31,9 @@ public class Main {
         missions.add(new Jupiter());
 
         List<Booster> boosters = new ArrayList<>();
-        boosters.add(new Booster("EAP Ariane", 6470, 270, 30));
-        boosters.add(new Booster("SRB Shuttle", 12500, 590, 55));
-        boosters.add(new Booster("BE-3", 490, 25, 12));
+        boosters.add(new Booster("EAP Ariane", 6470, 27, 30));
+        boosters.add(new Booster("SRB Shuttle", 12500, 59, 55));
+        boosters.add(new Booster("BE-3", 490, 13, 12));
 
         List<Launch> launches = new ArrayList<>();
     
